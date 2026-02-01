@@ -13,7 +13,7 @@
 // ============================================================================
 
 /** @brief Device names for each slot (will show up in Bluetooth settings) */
-#define DEVICE_NAME_1 "USB-BLE Dev 1"
+#define DEVICE_NAME_1 "ThijsBLEBoard"
 #define DEVICE_NAME_2 "USB-BLE Dev 2"
 #define DEVICE_NAME_3 "USB-BLE Dev 3"
 
@@ -21,18 +21,19 @@
 #define DEVICE_MANUFACTURER "ESP32-S3"
 
 /** @brief Battery level reported over BLE (0-100) */
-#define BATTERY_LEVEL 100
+#define BATTERY_LEVEL 99
 
 /** @brief Number of available device slots (maximum 3 recommended) */
-#define NUM_DEVICE_SLOTS 3
+#define NUM_DEVICE_SLOTS 1
 
 /** @brief Key combo for device switching: Scroll Lock + number key */
-#define ENABLE_DEVICE_SWITCHING true
+#define ENABLE_DEVICE_SWITCHING false
 
 /**
  * @brief LED feedback pin (blinks to show current slot)
  * Set to -1 to disable, or use your board's built-in LED pin
  */
-#define LED_FEEDBACK_PIN 2
+#define LED_FEEDBACK_PIN -1
+#define LED_NEOPIXEL 21
 
 #endif // CONFIG_H

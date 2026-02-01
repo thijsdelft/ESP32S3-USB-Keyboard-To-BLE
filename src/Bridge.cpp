@@ -20,8 +20,9 @@ void Bridge::begin() {
   NVSUtils::loadSlotBonds(_currentSlot);
 
   // 3. Init BLE
-  const char *deviceNames[NUM_DEVICE_SLOTS] = {DEVICE_NAME_1, DEVICE_NAME_2,
-                                               DEVICE_NAME_3};
+  const char *deviceNames[NUM_DEVICE_SLOTS] = {DEVICE_NAME_1};
+    // , DEVICE_NAME_2,
+    //                                            DEVICE_NAME_3};
   _bleManager.begin(_currentSlot, deviceNames[_currentSlot]);
 
   // 4. Init USB
@@ -29,14 +30,16 @@ void Bridge::begin() {
   USBManager::begin();
 }
 
-void Bridge::loop() {
+bool Bridge::loop() {
   static unsigned long lastStatus = 0;
-  if (millis() - lastStatus > 5000) {
+  static bool connected = false;
+  if (millis() - lastStatus > 1000) {
     lastStatus = millis();
-    bool connected = _bleManager.isConnected();
+    connected = _bleManager.isConnected();
     Serial.printf("[Status] Slot %d | BLE: %s\n", _currentSlot + 1,
                   connected ? "CONNECTED" : "waiting for pairing...");
   }
+  return connected;
 }
 
 void Bridge::switchToSlot(uint8_t slot) {

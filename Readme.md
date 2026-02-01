@@ -107,7 +107,7 @@ pio run -t upload
 Edit `src/Config.h`:
 
 ```cpp
-#define DEVICE_NAME_1 "USB-BLE Dev 1"
+#define DEVICE_NAME_1 "USB-BLE Thijs"
 #define DEVICE_MANUFACTURER "Custom"
 ```
 

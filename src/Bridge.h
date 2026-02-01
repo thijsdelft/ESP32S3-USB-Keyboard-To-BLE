@@ -23,7 +23,7 @@ public:
   /**
    * @brief main loop for status reporting.
    */
-  static void loop();
+  static bool loop();
 
   /**
    * @brief Switches the active device slot, saves bonds, and restarts the
