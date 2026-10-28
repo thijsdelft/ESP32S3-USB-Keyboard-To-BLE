@@ -42,4 +42,7 @@
 #define LED_FEEDBACK_PIN -1
 #define LED_NEOPIXEL 21
 
+/** @brief NeoPixel blinks with this on/off time while no USB keyboard is seen */
+#define LED_BLINK_INTERVAL_MS 250
+
 #endif // CONFIG_H

@@ -9,6 +9,7 @@
 #include "hid_host.h"
 #include "usb/usb_host.h"
 #include <Arduino.h>
+#include <atomic>
 
 /** @brief Callback type for keyboard reports. */
 typedef void (*KeyboardReportCallback)(const uint8_t *data, size_t length);
@@ -26,8 +27,14 @@ public:
     _keyboardCb = cb;
   }
 
+  /** @brief Checks if at least one USB keyboard interface is open. */
+  static bool isKeyboardConnected() { return _openKeyboards > 0; }
+
 private:
   static KeyboardReportCallback _keyboardCb;
+
+  /** @brief Open keyboard interfaces; a keyboard can expose more than one. */
+  static std::atomic<int> _openKeyboards;
 
   static void usb_lib_task(void *arg);
   static void hid_host_task(void *pvParameters);

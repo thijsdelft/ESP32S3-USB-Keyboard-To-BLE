@@ -2,6 +2,7 @@
 #include <hid_usage_keyboard.h>
 
 KeyboardReportCallback USBManager::_keyboardCb = nullptr;
+std::atomic<int> USBManager::_openKeyboards{0};
 
 static QueueHandle_t hid_host_event_queue;
 
@@ -115,6 +116,8 @@ void USBManager::hid_host_device_event(
 
     if (hid_host_device_start(hid_device_handle) != ESP_OK) {
       Serial.println("[USB] Failed to start HID device");
+    } else if (HID_PROTOCOL_KEYBOARD == dev_params.proto) {
+      _openKeyboards++;
     }
     break;
 
@@ -153,6 +156,10 @@ void USBManager::hid_host_interface_callback(
     Serial.printf("[USB] %s disconnected\n",
                   hid_proto_name_str[dev_params.proto]);
     hid_host_device_close(hid_device_handle);
+    // A device whose start failed can still report a disconnect.
+    if (HID_PROTOCOL_KEYBOARD == dev_params.proto && _openKeyboards > 0) {
+      _openKeyboards--;
+    }
     break;
 
   case HID_HOST_INTERFACE_EVENT_TRANSFER_ERROR:

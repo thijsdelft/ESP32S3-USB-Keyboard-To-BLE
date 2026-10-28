@@ -43,7 +43,11 @@ void setup() {
 
 void loop() {
   bool connected = Bridge::loop();
-  if (connected)
+  bool ledOn = USBManager::isKeyboardConnected() ||
+               (millis() / LED_BLINK_INTERVAL_MS) % 2 == 0;
+  if (!ledOn)
+    leds[0] = CRGB::Black;
+  else if (connected)
     leds[0] = CRGB::Blue;
   else
     leds[0] = CRGB::Green;
