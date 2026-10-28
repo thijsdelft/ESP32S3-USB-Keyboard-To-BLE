@@ -32,10 +32,26 @@ void Bridge::begin() {
 
 bool Bridge::loop() {
   static unsigned long lastStatus = 0;
+  static unsigned long connectedSince = 0;
   static bool connected = false;
+  static bool bondsSaved = false;
   if (millis() - lastStatus > 1000) {
     lastStatus = millis();
-    connected = _bleManager.isConnected();
+    bool nowConnected = _bleManager.isConnected();
+    if (nowConnected && !connected) {
+      connectedSince = millis();
+      bondsSaved = false;
+    }
+    connected = nowConnected;
+
+    // Pairing completes after the link comes up; copying too early would
+    // persist the pre-pairing bond state.
+    if (connected && !bondsSaved &&
+        millis() - connectedSince > BOND_SAVE_DELAY_MS) {
+      NVSUtils::saveSlotBonds(_currentSlot);
+      bondsSaved = true;
+    }
+
     Serial.printf("[Status] Slot %d | BLE: %s\n", _currentSlot + 1,
                   connected ? "CONNECTED" : "waiting for pairing...");
   }

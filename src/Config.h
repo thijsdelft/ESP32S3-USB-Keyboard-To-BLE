@@ -26,6 +26,12 @@
 /** @brief Number of available device slots (maximum 3 recommended) */
 #define NUM_DEVICE_SLOTS 1
 
+/**
+ * @brief Delay after a BLE connection before the bonds are copied to the
+ * current slot's NVS namespace, so pairing has finished.
+ */
+#define BOND_SAVE_DELAY_MS 5000
+
 /** @brief Key combo for device switching: Scroll Lock + number key */
 #define ENABLE_DEVICE_SWITCHING false
 
